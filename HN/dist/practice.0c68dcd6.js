@@ -117,38 +117,33 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"app.js":[function(require,module,exports) {
-var container = document.getElementById('root');
+})({"practice.js":[function(require,module,exports) {
 var ajax = new XMLHttpRequest();
 var NEWS_URL = 'https://api.hnpwa.com/v0/news/1.json';
 var CONTENTS_URL = 'https://api.hnpwa.com/v0/item/@id/json';
-var content = document.createElement('div');
+var title = document.createElement('h1');
 ajax.open('GET', NEWS_URL, false);
 ajax.send();
-var newsFeed = JSON.parse(ajax.response); //json을 객체로 바꿈
-
-var ul = document.createElement('ul');
 window.addEventListener('hashchange', function () {
   var id = location.hash.substr(1);
   ajax.open('GET', CONTENTS_URL.replace('@id', id), false);
   ajax.send();
-  var newsContent = JSON.parse(ajax.response);
-  var title = document.createElement('h1');
-  title.innerHTML = newsContent.title;
-  content.appendChild(title);
+  var contents = JSON.parse(ajax.response);
+  console.log(contents.title);
+  title.innerHTML = contents.title;
 });
-
-for (var i = 0; i < 10; i++) {
+var newsFeed = JSON.parse(ajax.response);
+var ul = document.createElement('ul');
+newsFeed.forEach(function (element) {
   var li = document.createElement('li');
   var a = document.createElement('a');
-  a.href = "#".concat(newsFeed[i].id);
-  a.innerHTML = "".concat(newsFeed[i].title, " (").concat(newsFeed[i].comments_count, ")");
+  a.innerHTML = "".concat(element.title, " (").concat(element.comments_count, ")");
+  a.href = "#".concat(element.id);
   li.appendChild(a);
   ul.appendChild(li);
-}
-
-container.appendChild(ul);
-container.appendChild(content);
+});
+document.getElementById('root').appendChild(ul);
+document.getElementById('root').appendChild(title);
 },{}],"../../.nvm/versions/node/v16.13.2/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -177,7 +172,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65068" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60067" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
@@ -353,5 +348,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../../.nvm/versions/node/v16.13.2/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","app.js"], null)
-//# sourceMappingURL=/app.c328ef1a.js.map
+},{}]},{},["../../.nvm/versions/node/v16.13.2/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","practice.js"], null)
+//# sourceMappingURL=/practice.0c68dcd6.js.map
