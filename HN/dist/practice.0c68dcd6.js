@@ -121,29 +121,31 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 var ajax = new XMLHttpRequest();
 var NEWS_URL = 'https://api.hnpwa.com/v0/news/1.json';
 var CONTENTS_URL = 'https://api.hnpwa.com/v0/item/@id/json';
-var title = document.createElement('h1');
-ajax.open('GET', NEWS_URL, false);
-ajax.send();
+var content = document.createElement('div');
+var container = document.getElementById('root');
+
+function getData(url) {
+  ajax.open('GET', url, false);
+  ajax.send();
+  return JSON.parse(ajax.response);
+}
+
 window.addEventListener('hashchange', function () {
   var id = location.hash.substr(1);
-  ajax.open('GET', CONTENTS_URL.replace('@id', id), false);
-  ajax.send();
-  var contents = JSON.parse(ajax.response);
-  console.log(contents.title);
-  title.innerHTML = contents.title;
+  var newsContent = getData(CONTENTS_URL.replace('@id', id));
+  var title = document.createElement('h1');
+  title.innerHTML = newsContent.title;
+  content.appendChild(title);
 });
-var newsFeed = JSON.parse(ajax.response);
+var newsFeed = getData(NEWS_URL);
 var ul = document.createElement('ul');
 newsFeed.forEach(function (element) {
-  var li = document.createElement('li');
-  var a = document.createElement('a');
-  a.innerHTML = "".concat(element.title, " (").concat(element.comments_count, ")");
-  a.href = "#".concat(element.id);
-  li.appendChild(a);
-  ul.appendChild(li);
+  var div = document.createElement('div');
+  div.innerHTML = "\n        <li>\n            <a href=#".concat(element.id, ">").concat(element.title, " (").concat(element.comments_count, ")</a>\n        </li>\n    ");
+  ul.appendChild(div.firstElementChild);
 });
-document.getElementById('root').appendChild(ul);
-document.getElementById('root').appendChild(title);
+container.appendChild(ul);
+container.appendChild(content);
 },{}],"../../.nvm/versions/node/v16.13.2/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -172,7 +174,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60067" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65046" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
